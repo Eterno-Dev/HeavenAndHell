@@ -63,15 +63,15 @@ const challenges = {
 };
 
 const storeItems = [
-  { id: 's1', text: 'Obligarle a hacer un baile de Just Dance "caliente"', price: 8 },
+  { id: 's1', text: 'Obligarle a hacer un baile de Just Dance "caliente"', price: 6 },
   { id: 's2', text: 'Quitarle una prenda a tu elección', price: 4 },
-  { id: 's3', text: 'Obligarle a llevar los ojos vendados 5 min', price: 6 },
-  { id: 's4', text: 'Exigir 4 minutos de masaje donde tú elijas', price: 5 },
-  { id: 's5', text: 'Quedar esposado/a durante 10 min', price: 10 },
-  { id: 's6', text: 'Te debe llamar "Mi Señor/a" durante 10 min', price: 4 },
-  { id: 's7', text: 'Hacerte un masaje en los pies de 3 minutos', price: 4 },
-  { id: 's8', text: 'Contarte un chiste malo y si no te ríes tiene que darte un beso', price: 3 },
-  { id: 's9', text: 'Darte de comer en la boca lo que quede de postre o bebida', price: 3 }
+  { id: 's3', text: 'Obligarle a llevar los ojos vendados 5 min', price: 5 },
+  { id: 's4', text: 'Exigir 4 minutos de masaje donde tú elijas', price: 4 },
+  { id: 's5', text: 'Quedar esposado/a durante 10 min', price: 7 },
+  { id: 's6', text: 'Te debe llamar "Mi Señor/a" durante 10 min', price: 3 },
+  { id: 's7', text: 'Hacerte un masaje en los pies de 3 minutos', price: 3 },
+  { id: 's8', text: 'Contarte un chiste malo y si no te ríes tiene que darte un beso', price: 2 },
+  { id: 's9', text: 'Pasar la lengua suavemente por la parte del cuerpo que tú elijas', price: 4 }
 ];
 
 const romanticStoreItems = [
