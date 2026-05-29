@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { savePoints, listenToScores } from '../firebase';
+import confetti from 'canvas-confetti';
 
 // ==========================================
 // RETOS Y TIENDA
@@ -62,20 +63,26 @@ const challenges = {
 };
 
 const storeItems = [
-  { id: 's1', text: 'Obligarle a hacer un baile de Just Dance "caliente"', price: 10 },
+  { id: 's1', text: 'Obligarle a hacer un baile de Just Dance "caliente"', price: 8 },
   { id: 's2', text: 'Quitarle una prenda a tu elección', price: 4 },
-  { id: 's3', text: 'Obligarle a llevar los ojos vendados 5 min', price: 8 },
-  { id: 's4', text: 'Exigir 4 minutos de masaje donde tú elijas', price: 7 },
-  { id: 's5', text: 'Quedar esposado/a durante 10 min', price: 15 },
-  { id: 's6', text: 'Te debe llamar "Mi Señor/a" durante 10 min', price: 5 }
+  { id: 's3', text: 'Obligarle a llevar los ojos vendados 5 min', price: 6 },
+  { id: 's4', text: 'Exigir 4 minutos de masaje donde tú elijas', price: 5 },
+  { id: 's5', text: 'Quedar esposado/a durante 10 min', price: 10 },
+  { id: 's6', text: 'Te debe llamar "Mi Señor/a" durante 10 min', price: 4 },
+  { id: 's7', text: 'Hacerte un masaje en los pies de 3 minutos', price: 4 },
+  { id: 's8', text: 'Contarte un chiste malo y si no te ríes tiene que darte un beso', price: 3 },
+  { id: 's9', text: 'Darte de comer en la boca lo que quede de postre o bebida', price: 3 }
 ];
 
 const romanticStoreItems = [
-  { id: 'r1', text: 'Masaje a elección del comprador durante 4 min', price: 10 },
-  { id: 'r2', text: 'Desayuno preparado en la cama a la mañana siguiente', price: 15 },
-  { id: 'r3', text: 'Decirle a la persona que lo compra "Te amo" 30 veces susurrándole al oído', price: 5 },
-  { id: 'r4', text: 'Cantar una canción romántica de Spotify a tu elección', price: 12 },
-  { id: 'r5', text: 'Un beso lento y apasionado de 1 minuto sin interrupciones', price: 8 }
+  { id: 'r1', text: 'Masaje a elección del comprador durante 4 min', price: 6 },
+  { id: 'r3', text: 'Decirle a la persona "Te amo" 30 veces susurrándole al oído', price: 4 },
+  { id: 'r4', text: 'Cantar una canción romántica de Spotify a tu elección', price: 8 },
+  { id: 'r5', text: 'Un beso lento y apasionado de 1 minuto sin interrupciones', price: 6 },
+  { id: 'r6', text: 'Un beso suave y tierno', price: 2 },
+  { id: 'r7', text: 'Acariciarte el pelo relajadamente durante 3 minutos', price: 3 },
+  { id: 'r8', text: 'Un abrazo interminable de 2 minutos en silencio', price: 4 },
+  { id: 'r9', text: 'Acompañarte hasta la puerta de la mano para despedirse', price: 2 }
 ];
 
 function PhaseManager({ gender }) {
@@ -105,6 +112,8 @@ function PhaseManager({ gender }) {
   const [storeCardIndex, setStoreCardIndex] = useState(0);
   const [storeTouchStart, setStoreTouchStart] = useState(null);
   const [storeTouchEnd, setStoreTouchEnd] = useState(null);
+  
+  const [purchaseMessage, setPurchaseMessage] = useState(null);
 
   // Time Logic Loop
   useEffect(() => {
@@ -200,7 +209,7 @@ function PhaseManager({ gender }) {
     }
   };
 
-  const buyItem = (price, isRomantic) => {
+  const buyItem = (price, isRomantic, text) => {
     const currentPoints = calculatePoints(gender);
     if (currentPoints >= price) {
       const updatedUserScores = {
@@ -208,8 +217,19 @@ function PhaseManager({ gender }) {
         spent: (rawScores[gender]?.spent || 0) + price
       };
       savePoints(gender, updatedUserScores);
-      alert('¡Comprado! A disfrutarlo.');
-      if (!isRomantic) setShowStore(false);
+      
+      confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: isRomantic ? ['#FF69B4', '#FFFFFF', '#FFB6C1'] : ['#FFD700', '#FF0000', '#000000']
+      });
+
+      setPurchaseMessage(text);
+      setTimeout(() => {
+        setPurchaseMessage(null);
+        if (!isRomantic) setShowStore(false);
+      }, 3000);
     } else {
       alert('No tienes suficientes puntos oscuros para comprar esto.');
     }
@@ -278,7 +298,7 @@ function PhaseManager({ gender }) {
         }}>
           <p style={{ fontSize: '1.3rem', lineHeight: '1.4', fontFamily: 'var(--font-sans)', fontWeight: 300, marginBottom: '2rem' }}>{currentItem?.text}</p>
           <button 
-            onClick={() => buyItem(currentItem?.price, isRomantic)}
+            onClick={() => buyItem(currentItem?.price, isRomantic, currentItem?.text)}
             style={{ background: themeColor, color: '#000', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '8px', fontWeight: 'bold', width: '100%', cursor: 'pointer', fontSize: '1rem' }}
           >
             Comprar ({currentItem?.price} pts)
@@ -319,6 +339,13 @@ function PhaseManager({ gender }) {
     </button>
   );
 
+  const PurchaseOverlay = () => purchaseMessage ? (
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', background: 'rgba(0,0,0,0.85)', zIndex: 9999, animation: 'fadeIn 0.3s ease-out' }}>
+      <h2 style={{ fontSize: '3rem', color: '#FFF', textShadow: '0 0 20px rgba(255,255,255,0.8)', marginBottom: '1rem' }}>¡COMPRADO!</h2>
+      <p style={{ color: 'var(--accent-red)', fontSize: '1.5rem', textAlign: 'center', padding: '0 2rem' }}>{purchaseMessage}</p>
+    </div>
+  ) : null;
+
   const roleData = phase === 1 || phase === 1.5 ? challenges.phase1[gender] : challenges.phase2[gender];
 
   if (phase === 0) {
@@ -347,6 +374,7 @@ function PhaseManager({ gender }) {
 
     return (
       <div className="screen-container" style={{ justifyContent: 'center', position: 'relative' }}>
+        <PurchaseOverlay />
         {isPhase2 && <div style={{ position: 'absolute', left: '15px', top: '0', zIndex: 6 }}><StoreButton /></div>}
         {showStore && <StoreModal />}
 
@@ -490,6 +518,7 @@ function PhaseManager({ gender }) {
   if (phase === 3) {
     return (
       <div className="screen-container" style={{ justifyContent: 'center' }}>
+        <PurchaseOverlay />
         <h2 style={{ color: '#FF69B4', fontSize: '2rem', fontFamily: 'var(--font-sans)', fontWeight: 900, marginBottom: '0.5rem', textAlign: 'center' }}>FIN DE LA NOCHE</h2>
         <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2rem' }}>Elige tus recompensas románticas finales.</p>
         
