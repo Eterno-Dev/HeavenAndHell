@@ -407,20 +407,19 @@ function PhaseManager({ gender }) {
   const SwapPopupOverlay = () => showSwapPopup ? (
     <div className="modal-overlay" style={{ zIndex: 9999 }}>
       <div className="modal-content" style={{ borderColor: '#FFD700', background: 'linear-gradient(145deg, #111, #331)' }}>
-        <h3 style={{ fontFamily: 'var(--font-sans)', color: '#FFD700', marginBottom: '1rem', fontWeight: 900, fontSize: '2rem' }}>¡TIEMPO! 📱🔄📱</h3>
+        <h3 style={{ fontFamily: 'var(--font-sans)', color: '#FFD700', marginBottom: '1rem', fontWeight: 900, fontSize: '2rem' }}>¡TIEMPO!</h3>
         <p style={{ fontSize: '1.2rem', marginBottom: '1.5rem', color: '#FFF' }}>
           Intercambia el teléfono con tu pareja.
         </p>
-        <p style={{ fontSize: '1rem', marginBottom: '2rem', color: '#DDD' }}>
-          Ahora vas a votar <strong>los retos que ha cumplido él/ella</strong>. 
-          Sé objetivo/a. Si no ha cumplido algo, <strong style={{ color: 'var(--accent-red)' }}>¡no lo marques y te robarás esos puntos!</strong>
+        <p style={{ fontSize: '1.1rem', marginBottom: '2rem', color: '#DDD' }}>
+          Vota los retos que ha cumplido.
         </p>
         <button 
           className="btn btn-primary" 
           style={{ background: '#FFD700', color: '#000' }} 
           onClick={() => {
             playPop();
-            confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
+            confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 }, colors: ['#FFD700', '#FFFFFF'] });
             setShowSwapPopup(false);
           }}
         >
@@ -573,7 +572,7 @@ function PhaseManager({ gender }) {
       <div className="screen-container" style={{ justifyContent: 'flex-start', paddingTop: '3rem', position: 'relative' }}>
         <SwapPopupOverlay />
         <h2 style={{ marginBottom: '1rem', color: 'var(--accent-red)', textAlign: 'center', fontFamily: 'var(--font-sans)', fontWeight: 900 }}>HORA DE VOTAR</h2>
-        <p style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-secondary)' }}>Marca los retos que ha cumplido TU PAREJA.<br/><strong style={{ color: 'var(--accent-red)' }}>Lo que NO marques, se te sumará a ti.</strong></p>
+        <p style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-secondary)' }}>Marca los retos que ha cumplido <strong>tu pareja</strong>.<br/><strong style={{ color: 'var(--accent-red)' }}>Lo que NO marques, se te sumará a ti.</strong></p>
         
         <div style={{ width: '100%', maxWidth: '400px' }}>
           {items.map(item => {
