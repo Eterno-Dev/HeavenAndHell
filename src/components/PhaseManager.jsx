@@ -86,7 +86,21 @@ const romanticStoreItems = [
 ];
 
 function PhaseManager({ gender }) {
-  const [realPhase, setRealPhase] = useState(0);
+  const getInitialPhase = () => {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const effectiveHours = hours < 5 ? hours + 24 : hours;
+    const currentTime = effectiveHours * 100 + minutes;
+    if (currentTime >= 2440) return 3;
+    if (currentTime >= 2430) return 2.5;
+    if (currentTime >= 2200) return 2;
+    if (currentTime >= 2150) return 1.5;
+    if (currentTime >= 1930) return 1;
+    return 0;
+  };
+
+  const [realPhase, setRealPhase] = useState(getInitialPhase());
   const [debugPhase, setDebugPhase] = useState(null);
   
   const [checkedItems1, setCheckedItems1] = useState({});
@@ -114,6 +128,45 @@ function PhaseManager({ gender }) {
   const [storeTouchEnd, setStoreTouchEnd] = useState(null);
   
   const [purchaseMessage, setPurchaseMessage] = useState(null);
+  const [showSwapPopup, setShowSwapPopup] = useState(false);
+
+  // Audio synthesizers (no assets needed)
+  const playPop = () => {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(1, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    } catch(e) {}
+  };
+
+  const playChaChing = () => {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const playBeep = (freq, startTime) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(freq, startTime);
+        gain.gain.setValueAtTime(0.3, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.15);
+        osc.start(startTime);
+        osc.stop(startTime + 0.15);
+      };
+      playBeep(1200, ctx.currentTime);
+      playBeep(1600, ctx.currentTime + 0.1);
+    } catch(e) {}
+  };
 
   // Time Logic Loop
   useEffect(() => {
@@ -173,9 +226,13 @@ function PhaseManager({ gender }) {
   useEffect(() => {
     if (phase === 1) setShowAlarmPopup(true);
     if (phase === 2) setShowAlarmPopup2(true);
+    
+    if (phase === 1.5 && !hasVoted1) setShowSwapPopup(true);
+    if (phase === 2.5 && !hasVoted2) setShowSwapPopup(true);
+    
     setCardIndex(0);
     setStoreCardIndex(0);
-  }, [phase]);
+  }, [phase, hasVoted1, hasVoted2]);
 
   const handleCheck1 = (id) => setCheckedItems1(prev => ({ ...prev, [id]: !prev[id] }));
   const handleCheck2 = (id) => setCheckedItems2(prev => ({ ...prev, [id]: !prev[id] }));
@@ -218,6 +275,7 @@ function PhaseManager({ gender }) {
       };
       savePoints(gender, updatedUserScores);
       
+      playChaChing();
       confetti({
         particleCount: 150,
         spread: 80,
@@ -343,6 +401,32 @@ function PhaseManager({ gender }) {
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', background: 'rgba(0,0,0,0.85)', zIndex: 9999, animation: 'fadeIn 0.3s ease-out' }}>
       <h2 style={{ fontSize: '3rem', color: '#FFF', textShadow: '0 0 20px rgba(255,255,255,0.8)', marginBottom: '1rem' }}>¡COMPRADO!</h2>
       <p style={{ color: 'var(--accent-red)', fontSize: '1.5rem', textAlign: 'center', padding: '0 2rem' }}>{purchaseMessage}</p>
+    </div>
+  ) : null;
+
+  const SwapPopupOverlay = () => showSwapPopup ? (
+    <div className="modal-overlay" style={{ zIndex: 9999 }}>
+      <div className="modal-content" style={{ borderColor: '#FFD700', background: 'linear-gradient(145deg, #111, #331)' }}>
+        <h3 style={{ fontFamily: 'var(--font-sans)', color: '#FFD700', marginBottom: '1rem', fontWeight: 900, fontSize: '2rem' }}>¡TIEMPO! 📱🔄📱</h3>
+        <p style={{ fontSize: '1.2rem', marginBottom: '1.5rem', color: '#FFF' }}>
+          Intercambia el teléfono con tu pareja.
+        </p>
+        <p style={{ fontSize: '1rem', marginBottom: '2rem', color: '#DDD' }}>
+          Ahora vas a votar <strong>los retos que ha cumplido él/ella</strong>. 
+          Sé objetivo/a. Si no ha cumplido algo, <strong style={{ color: 'var(--accent-red)' }}>¡no lo marques y te robarás esos puntos!</strong>
+        </p>
+        <button 
+          className="btn btn-primary" 
+          style={{ background: '#FFD700', color: '#000' }} 
+          onClick={() => {
+            playPop();
+            confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
+            setShowSwapPopup(false);
+          }}
+        >
+          ¡TELÉFONOS INTERCAMBIADOS!
+        </button>
+      </div>
     </div>
   ) : null;
 
@@ -486,9 +570,10 @@ function PhaseManager({ gender }) {
     }
 
     return (
-      <div className="screen-container" style={{ justifyContent: 'flex-start', paddingTop: '3rem' }}>
+      <div className="screen-container" style={{ justifyContent: 'flex-start', paddingTop: '3rem', position: 'relative' }}>
+        <SwapPopupOverlay />
         <h2 style={{ marginBottom: '1rem', color: 'var(--accent-red)', textAlign: 'center', fontFamily: 'var(--font-sans)', fontWeight: 900 }}>HORA DE VOTAR</h2>
-        <p style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-secondary)' }}>Marca los retos que has cumplido.<br/><strong style={{ color: 'var(--accent-red)' }}>Lo que NO marques, se lo sumará tu pareja.</strong></p>
+        <p style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-secondary)' }}>Marca los retos que ha cumplido TU PAREJA.<br/><strong style={{ color: 'var(--accent-red)' }}>Lo que NO marques, se te sumará a ti.</strong></p>
         
         <div style={{ width: '100%', maxWidth: '400px' }}>
           {items.map(item => {
