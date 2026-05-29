@@ -36,7 +36,7 @@ function Welcome({ onSelectGender }) {
 
               <p style={{ fontSize: '1.2rem', borderLeft: '4px solid var(--accent-red)', paddingLeft: '1rem' }}>
                 <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem' }}>REGLA 2: EL TIEMPO</span>
-                Coloca inmediatamente una <strong>ALARMA a las 21:50</strong>.
+                Coloca inmediatamente una <strong>ALARMA a las 19:30</strong>.
               </p>
             </div>
 
