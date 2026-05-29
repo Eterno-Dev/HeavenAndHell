@@ -6,11 +6,7 @@ function Login({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // For now, simple hardcoded password. 
-    // In a real app, we might check an env variable or simpler.
-    // The user didn't specify a password, so we'll use "50shades" for testing, 
-    // but allow anything that has > 3 chars for now until they decide.
-    if (password.length >= 3) {
+    if (password === 'Oreo') {
       onLogin();
     } else {
       setError('Contraseña incorrecta');
