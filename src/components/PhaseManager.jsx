@@ -325,17 +325,10 @@ function PhaseManager({ gender }) {
     if (distance < -50 && storeCardIndex > 0) setStoreCardIndex(storeCardIndex - 1);
   };
 
-  const DebugControls = () => (
-    <div style={{ position: 'fixed', bottom: '10px', left: '10px', display: 'flex', gap: '5px', zIndex: 9999, flexWrap: 'wrap', maxWidth: '300px' }}>
-      <button onClick={() => setDebugPhase(0)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>W</button>
-      <button onClick={() => setDebugPhase(1)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>F1</button>
-      <button onClick={() => setDebugPhase(1.5)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>V1</button>
-      <button onClick={() => setDebugPhase(2)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>F2</button>
-      <button onClick={() => setDebugPhase(2.5)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>V2</button>
-      <button onClick={() => setDebugPhase(3)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>F3</button>
-      <button onClick={() => setDebugPhase(null)} style={{ fontSize: '0.6rem', padding: '5px', background: '#800', color: '#fff', border: '1px solid #a00' }}>Real</button>
-    </div>
-  );
+  const DebugControls = () => {
+    // Hidden for the final version
+    return null;
+  };
 
   const StoreSlider = ({ items, isRomantic }) => {
     const currentItem = items[storeCardIndex] || items[0];
@@ -569,10 +562,11 @@ function PhaseManager({ gender }) {
     }
 
     return (
-      <div className="screen-container" style={{ justifyContent: 'flex-start', paddingTop: '3rem', position: 'relative' }}>
+      <>
         <SwapPopupOverlay />
-        <h2 style={{ marginBottom: '1rem', color: 'var(--accent-red)', textAlign: 'center', fontFamily: 'var(--font-sans)', fontWeight: 900 }}>HORA DE VOTAR</h2>
-        <p style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-secondary)' }}>Marca los retos que ha cumplido <strong>tu pareja</strong>.<br/><strong style={{ color: 'var(--accent-red)' }}>Lo que NO marques, se te sumará a ti.</strong></p>
+        <div className="screen-container" style={{ justifyContent: 'flex-start', paddingTop: '3rem', position: 'relative' }}>
+          <h2 style={{ marginBottom: '1rem', color: 'var(--accent-red)', textAlign: 'center', fontFamily: 'var(--font-sans)', fontWeight: 900 }}>HORA DE VOTAR</h2>
+          <p style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-secondary)' }}>Marca los retos que ha cumplido <strong>tu pareja</strong>.<br/><strong style={{ color: 'var(--accent-red)' }}>Lo que NO marques, se te sumará a ti.</strong></p>
         
         <div style={{ width: '100%', maxWidth: '400px' }}>
           {items.map(item => {
@@ -595,6 +589,7 @@ function PhaseManager({ gender }) {
         <button className="btn btn-primary" onClick={() => submitVote(phaseNum)} style={{ marginTop: '2rem' }}>ENVIAR PUNTOS</button>
         <DebugControls />
       </div>
+      </>
     );
   }
 
