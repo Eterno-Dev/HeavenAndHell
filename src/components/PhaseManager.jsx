@@ -79,8 +79,9 @@ function PhaseManager({ gender }) {
   const [checkedItems1, setCheckedItems1] = useState({});
   const [checkedItems2, setCheckedItems2] = useState({});
   
-  const [hasVoted1, setHasVoted1] = useState(false);
-  const [hasVoted2, setHasVoted2] = useState(false);
+  // Persist voting state in localStorage so closing the browser doesn't reset it
+  const [hasVoted1, setHasVoted1] = useState(localStorage.getItem('hh_voted1') === 'true');
+  const [hasVoted2, setHasVoted2] = useState(localStorage.getItem('hh_voted2') === 'true');
 
   const [rawScores, setRawScores] = useState({ 
     woman: { earned: 0, missed: 0, spent: 0 }, 
@@ -117,7 +118,8 @@ function PhaseManager({ gender }) {
       const hours = now.getHours();
       const minutes = now.getMinutes();
       
-      const effectiveHours = hours < 6 ? hours + 24 : hours;
+      // Changed to < 5 so at 05:00 AM it resets to Phase 0 for the next day
+      const effectiveHours = hours < 5 ? hours + 24 : hours;
       const currentTime = effectiveHours * 100 + minutes;
 
       if (currentTime >= 2440) setRealPhase(3);         // 00:40 Tienda Romántica
@@ -133,6 +135,26 @@ function PhaseManager({ gender }) {
 
   const phase = debugPhase !== null ? debugPhase : realPhase;
 
+  // Auto-reset Database and local state when in Phase 0 or 1
+  useEffect(() => {
+    if (phase === 0 || phase === 1) {
+      localStorage.removeItem('hh_voted1');
+      localStorage.removeItem('hh_voted2');
+      setHasVoted1(false);
+      setHasVoted2(false);
+
+      const w = rawScores.woman || { earned: 0, missed: 0, spent: 0 };
+      const m = rawScores.man || { earned: 0, missed: 0, spent: 0 };
+
+      // Only reset if they are not already 0 to prevent infinite write loops
+      if (w.earned !== 0 || w.missed !== 0 || w.spent !== 0 || m.earned !== 0 || m.missed !== 0 || m.spent !== 0) {
+        savePoints('woman', { earned: 0, missed: 0, spent: 0 });
+        savePoints('man', { earned: 0, missed: 0, spent: 0 });
+      }
+    }
+  }, [phase, rawScores]);
+
+  // Reset index and popup when switching phases
   useEffect(() => {
     if (phase === 1) setShowAlarmPopup(true);
     if (phase === 2) setShowAlarmPopup2(true);
@@ -163,8 +185,13 @@ function PhaseManager({ gender }) {
 
     savePoints(gender, updatedUserScores);
     
-    if (phaseNum === 1) setHasVoted1(true);
-    else setHasVoted2(true);
+    if (phaseNum === 1) {
+      setHasVoted1(true);
+      localStorage.setItem('hh_voted1', 'true');
+    } else {
+      setHasVoted2(true);
+      localStorage.setItem('hh_voted2', 'true');
+    }
   };
 
   const buyItem = (price, isRomantic) => {
