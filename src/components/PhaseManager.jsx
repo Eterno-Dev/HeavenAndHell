@@ -9,25 +9,31 @@ const challenges = {
     woman: {
       role: 'Demonio', icon: '😈',
       items: [
-        { id: 'w1_1', text: 'Morderle el cuello suavemente', points: 3 },
+        { id: 'w1_1', text: 'Morderle el labio suavemente', points: 3 },
         { id: 'w1_2', text: 'Dejarle una marca de pintalabios rojo en el moflete o cuello', points: 4 },
         { id: 'w1_3', text: 'Acariciarle por debajo de la mesa durante la cena', points: 5 },
-        { id: 'w1_4', text: 'Susurrarle al oído lo que le harás en la Fase 2', points: 2 },
+        { id: 'w1_4', text: 'Susurrarle al oído alguna cosa subida de tono que piensas hacerle', points: 2 },
         { id: 'w1_5', text: 'Darle un azote "sin venir a cuento" de repente', points: 3 },
         { id: 'w1_6', text: 'Empujarle suavemente contra la pared o puerta al llegar', points: 4 },
-        { id: 'w1_7', text: 'Quitarle una prenda sin usar las manos', points: 5 }
+        { id: 'w1_7', text: 'Morderte el labio inferior y mirarlo de manera sexy durante una conversación', points: 3 },
+        { id: 'w1_8', text: 'Hacer que se arrodille', points: 3 },
+        { id: 'w1_9', text: 'Guiar su mano hacia una parte sexy de tu cuerpo', points: 3 },
+        { id: 'w1_10', text: 'Chuparle un dedo de la mano de manera sexy', points: 2 }
       ]
     },
     man: {
       role: 'Ángel', icon: '😇',
       items: [
-        { id: 'm1_1', text: 'Poner la alarma obligatoria a las 21:50', points: 1 },
+        { id: 'm1_1', text: 'Alabar su apariencia y ropa', points: 2 },
         { id: 'm1_2', text: 'Darle un beso en la mano de forma elegante en el paseo', points: 2 },
         { id: 'm1_3', text: 'Hacerle un piropo/cumplido elaborado mirándole a los ojos en la cena', points: 3 },
         { id: 'm1_4', text: 'Servirle la bebida o el plato especial sin que lo pida', points: 2 },
         { id: 'm1_5', text: 'Sostenerle la mirada sin apartarla durante 1 minuto en silencio', points: 4 },
         { id: 'm1_6', text: 'Pedir permiso siempre antes de tocarla (todo el tiempo)', points: 5 },
-        { id: 'm1_7', text: 'Regalarle una joya sorpresa justo antes de que suene la alarma de las 21:50', points: 6 }
+        { id: 'm1_7', text: 'Regalarle un anillo de rodillas y ponérselo en el dedo', points: 6 },
+        { id: 'm1_8', text: 'Regalarle una rosa', points: 3 },
+        { id: 'm1_9', text: 'Conseguir que te diga que tu comida está muy buena', points: 3 },
+        { id: 'm1_10', text: 'Hacer que Demonio diga "Te amo" o "Eres el Mejor"', points: 2 }
       ]
     }
   },
@@ -35,21 +41,21 @@ const challenges = {
     woman: {
       role: 'Ángel', icon: '😇',
       items: [
-        { id: 'w2_1', text: 'Ponerte el antifaz / vendarte los ojos y dejarte guiar a ciegas', points: 4 },
-        { id: 'w2_2', text: 'Cumplir 3 órdenes seguidas del Demonio sin rechistar', points: 5 },
-        { id: 'w2_3', text: 'Llenarle la espalda entera de besos', points: 3 },
-        { id: 'w2_4', text: 'Dejar que te espose o te ate durante 5 minutos', points: 6 },
-        { id: 'w2_5', text: 'Bailarle de forma sugerente durante una canción', points: 5 }
+        { id: 'w2_1', text: 'Conseguir que bailéis juntos una canción lenta', points: 5 },
+        { id: 'w2_2', text: 'Ponerte el antifaz / vendarte los ojos y dejarte guiar a ciegas', points: 4 },
+        { id: 'w2_3', text: 'Cumplir 3 órdenes seguidas del Demonio sin rechistar', points: 5 },
+        { id: 'w2_4', text: 'Llenarle la espalda entera de besos', points: 3 },
+        { id: 'w2_5', text: 'Dejar que te espose o te ate durante 5 minutos', points: 6 }
       ]
     },
     man: {
       role: 'Demonio', icon: '😈',
       items: [
-        { id: 'm2_1', text: 'Usar el pintalabios rojo de ella para dibujar/escribir algo en su espalda', points: 3 },
-        { id: 'm2_2', text: 'Elegir un disfraz/ropa picante y hacer que se lo ponga', points: 4 },
-        { id: 'm2_3', text: 'Vendarle los ojos y darle a probar 3 cosas misteriosas (comida, etc)', points: 5 },
-        { id: 'm2_4', text: 'Usar globos, plumas o hielo para hacerle cosquillas mientras está atada/vendada', points: 4 },
-        { id: 'm2_5', text: 'Darle una orden estricta que no pueda romper en toda la noche', points: 5 }
+        { id: 'm2_1', text: 'Usar el pintalabios rojo de ella para dibujar/escribir algo en sus nalgas', points: 3 },
+        { id: 'm2_2', text: 'Elegir un disfraz y hacer que se lo ponga', points: 4 },
+        { id: 'm2_3', text: 'Vendarle los ojos y conseguir sacar algún gemido', points: 6 },
+        { id: 'm2_4', text: 'Conseguir que te arañe o muerda mientras la molestas', points: 5 },
+        { id: 'm2_5', text: 'Hacer que cumpla una orden estricta que no pueda romper en toda la noche', points: 5 }
       ]
     }
   }
@@ -57,19 +63,19 @@ const challenges = {
 
 const storeItems = [
   { id: 's1', text: 'Obligarle a hacer un baile de Just Dance "caliente"', price: 10 },
-  { id: 's2', text: 'Quitarle una prenda a tu elección', price: 12 },
-  { id: 's3', text: 'Obligarle a llevar los ojos vendados 10 min', price: 8 },
-  { id: 's4', text: 'Exigir 5 minutos de masaje donde tú elijas', price: 7 },
-  { id: 's5', text: 'Queda esposado/a durante 10 min', price: 15 },
-  { id: 's6', text: 'Te debe llamar "Mi Señor/a" durante 15 min', price: 5 }
+  { id: 's2', text: 'Quitarle una prenda a tu elección', price: 4 },
+  { id: 's3', text: 'Obligarle a llevar los ojos vendados 5 min', price: 8 },
+  { id: 's4', text: 'Exigir 4 minutos de masaje donde tú elijas', price: 7 },
+  { id: 's5', text: 'Quedar esposado/a durante 10 min', price: 15 },
+  { id: 's6', text: 'Te debe llamar "Mi Señor/a" durante 10 min', price: 5 }
 ];
 
 const romanticStoreItems = [
-  { id: 'r1', text: 'Masaje relajante con aceites durante 15 minutos.', price: 10 },
-  { id: 'r2', text: 'Desayuno preparado en la cama a la mañana siguiente.', price: 15 },
-  { id: 'r3', text: 'Dormir abrazados toda la noche sin rechistar.', price: 5 },
-  { id: 'r4', text: 'Sesión de mimos suaves y caricias durante 20 minutos.', price: 12 },
-  { id: 'r5', text: 'Un beso lento y apasionado de 1 minuto sin interrupciones.', price: 8 }
+  { id: 'r1', text: 'Masaje a elección del comprador durante 4 min', price: 10 },
+  { id: 'r2', text: 'Desayuno preparado en la cama a la mañana siguiente', price: 15 },
+  { id: 'r3', text: 'Decirle a la persona que lo compra "Te amo" 30 veces susurrándole al oído', price: 5 },
+  { id: 'r4', text: 'Cantar una canción romántica de Spotify a tu elección', price: 12 },
+  { id: 'r5', text: 'Un beso lento y apasionado de 1 minuto sin interrupciones', price: 8 }
 ];
 
 function PhaseManager({ gender }) {
