@@ -116,6 +116,7 @@ function PhaseManager({ gender, isDebugMode }) {
   });
 
   const [cardIndex, setCardIndex] = useState(0);
+  const [showAlarmPopup0, setShowAlarmPopup0] = useState(true);
   const [showAlarmPopup, setShowAlarmPopup] = useState(true);
   const [showAlarmPopup2, setShowAlarmPopup2] = useState(true);
   const [showStore, setShowStore] = useState(false);
@@ -224,6 +225,7 @@ function PhaseManager({ gender, isDebugMode }) {
 
   // Reset index and popup when switching phases
   useEffect(() => {
+    if (phase === 0) setShowAlarmPopup0(true);
     if (phase === 1) setShowAlarmPopup(true);
     if (phase === 2) setShowAlarmPopup2(true);
     
@@ -437,6 +439,15 @@ function PhaseManager({ gender, isDebugMode }) {
   if (phase === 0) {
     return (
       <div className="screen-container">
+        {showAlarmPopup0 && (
+          <div className="modal-overlay">
+            <div className="modal-content" style={{ borderColor: 'var(--accent-red)' }}>
+              <h3 style={{ fontFamily: 'var(--font-sans)', color: 'var(--accent-red)', marginBottom: '1rem', fontWeight: 900 }}>ALERTA OBLIGATORIA</h3>
+              <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>Pon una alarma para las <strong>19:30</strong> AHORA MISMO.</p>
+              <button className="btn btn-primary" onClick={() => setShowAlarmPopup0(false)}>YA ESTÁ PUESTA</button>
+            </div>
+          </div>
+        )}
         <h2 style={{ marginBottom: '2rem', textAlign: 'center', fontFamily: 'var(--font-sans)', fontWeight: 300 }}>Sala de Espera</h2>
         <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2rem', lineHeight: '1.6' }}>Aún no es el momento. <br/>La primera información se revelará a las 19:30.</p>
         {gender === 'woman' && (
