@@ -6,8 +6,10 @@ function Login({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === 'Oreo') {
-      onLogin();
+    if (password === 'TeAmo') {
+      onLogin(false);
+    } else if (password === 'Oreo') {
+      onLogin(true);
     } else {
       setError('Contraseña incorrecta');
     }

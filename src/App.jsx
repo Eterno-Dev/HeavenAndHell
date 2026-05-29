@@ -6,18 +6,23 @@ import PhaseManager from './components/PhaseManager';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [gender, setGender] = useState(null);
+  const [isDebugMode, setIsDebugMode] = useState(false);
 
   useEffect(() => {
     // Check if user already logged in / selected gender
     const savedGender = localStorage.getItem('hh_gender');
+    const savedDebug = localStorage.getItem('hh_debug') === 'true';
     if (savedGender) {
       setIsLoggedIn(true);
       setGender(savedGender);
+      setIsDebugMode(savedDebug);
     }
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = (debugMode) => {
     setIsLoggedIn(true);
+    setIsDebugMode(debugMode);
+    localStorage.setItem('hh_debug', debugMode);
   };
 
   const handleGenderSelect = (selectedGender) => {
@@ -45,29 +50,31 @@ function App() {
 
       {!isLoggedIn && <Login onLogin={handleLogin} />}
       {isLoggedIn && !gender && <Welcome onSelectGender={handleGenderSelect} />}
-      {isLoggedIn && gender && <PhaseManager gender={gender} />}
+      {isLoggedIn && gender && <PhaseManager gender={gender} isDebugMode={isDebugMode} />}
 
       {/* Debug Reset Button */}
-      <button 
-        onClick={() => {
-          localStorage.clear();
-          window.location.reload();
-        }}
-        style={{
-          position: 'fixed',
-          bottom: '10px',
-          right: '10px',
-          background: 'transparent',
-          border: '1px solid rgba(255,255,255,0.2)',
-          color: 'rgba(255,255,255,0.3)',
-          fontSize: '0.7rem',
-          padding: '5px 10px',
-          cursor: 'pointer',
-          zIndex: 9999
-        }}
-      >
-        Reset App (Debug)
-      </button>
+      {isDebugMode && (
+        <button 
+          onClick={() => {
+            localStorage.clear();
+            window.location.reload();
+          }}
+          style={{
+            position: 'fixed',
+            bottom: '10px',
+            right: '10px',
+            background: 'transparent',
+            border: '1px solid rgba(255,255,255,0.2)',
+            color: 'rgba(255,255,255,0.3)',
+            fontSize: '0.7rem',
+            padding: '5px 10px',
+            cursor: 'pointer',
+            zIndex: 9999
+          }}
+        >
+          Reset App (Debug)
+        </button>
+      )}
     </>
   );
 }

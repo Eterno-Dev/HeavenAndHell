@@ -85,7 +85,7 @@ const romanticStoreItems = [
   { id: 'r9', text: 'Acompañarte hasta la puerta de la mano para despedirse', price: 2 }
 ];
 
-function PhaseManager({ gender }) {
+function PhaseManager({ gender, isDebugMode }) {
   const getInitialPhase = () => {
     const now = new Date();
     const hours = now.getHours();
@@ -326,8 +326,18 @@ function PhaseManager({ gender }) {
   };
 
   const DebugControls = () => {
-    // Hidden for the final version
-    return null;
+    if (!isDebugMode) return null;
+    return (
+      <div style={{ position: 'fixed', bottom: '10px', left: '10px', display: 'flex', gap: '5px', zIndex: 9999, flexWrap: 'wrap', maxWidth: '300px' }}>
+        <button onClick={() => setDebugPhase(0)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>W</button>
+        <button onClick={() => setDebugPhase(1)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>F1</button>
+        <button onClick={() => setDebugPhase(1.5)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>V1</button>
+        <button onClick={() => setDebugPhase(2)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>F2</button>
+        <button onClick={() => setDebugPhase(2.5)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>V2</button>
+        <button onClick={() => setDebugPhase(3)} style={{ fontSize: '0.6rem', padding: '5px', background: '#333', color: '#fff', border: '1px solid #555' }}>F3</button>
+        <button onClick={() => setDebugPhase(null)} style={{ fontSize: '0.6rem', padding: '5px', background: '#800', color: '#fff', border: '1px solid #a00' }}>Real</button>
+      </div>
+    );
   };
 
   const StoreSlider = ({ items, isRomantic }) => {
